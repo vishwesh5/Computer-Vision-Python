@@ -57,6 +57,44 @@ def createLine(image=None,firstPoint=None,secondPoint=None,color=(255,255,255),l
     # Return image
     return image
 
+def createRectangle(image=None,topLeftPoint=None,bottomRightPoint=None,color=(255,255,255),lineThickness=3,fill=False,fillColor=None):
+    """
+    Creates a rectangle on an image
+    Arguments:
+        image = 3D Numpy array; image on which the rectangle has to be created
+        topLeftPoint = (x,y); top left point of the rectangle
+        bottomRightPoint = (x,y); bottom right point of the rectangle
+        color = (B,G,R); color of the rectangle
+        lineThickness = integer; thickness of the line in pixels
+        fill = boolean; True if the rectangle is filled
+        fillColor = (B,G,R); color to be filled in the rectangle
+    """
+    # If image argument is not a numpy.ndarray
+    if type(image) != type(np.ones((5,5,3))):
+        # Create a black 300x300 px image
+        image = createBlankCanvas()
+    else:
+        image = image.copy()
+    # If top left corner not provided
+    if topLeftPoint == None:
+        topLeftPoint = (0,0)
+    # If bottom right corner not provided
+    if bottomRightPoint == None:
+        # bottom right point = (width,height)
+        bottomRightPoint = (image.shape[1],image.shape[0])
+    # If rectangle has to be filled
+    if fill:
+        # If fill color has not been provideed
+        if fillColor == None:
+            # Fill the rectangle with boundary color
+            fillColor = color
+        # Draw the filled rectangle
+        cv2.rectangle(image,topLeftPoint,bottomRightPoint,fillColor,-1)
+    # Draw the rectangle
+    cv2.rectangle(image,topLeftPoint,bottomRightPoint,color,lineThickness)
+    return image
+    
+
 def createSampleCross(bgColor=(0,0,0),crossColor=(255,255,255),height=300,width=300):
     """
     Creates a sample cross
