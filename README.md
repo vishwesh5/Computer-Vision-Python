@@ -113,3 +113,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+### `createRectangle` (*Description to be added*)
+
+### `createBorder` (*Description to be added*)
