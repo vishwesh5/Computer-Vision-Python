@@ -28,6 +28,8 @@ def main():
     blue_rect_yellow_fill = createRectangle(image=img_black_default,fill=True,fillColor=(0,255,255),lineThickness=3,color=(255,0,0),bottomRightPoint=(100,100),topLeftPoint=(50,50))
     # Create a yellow rectangle filled with blue
     finalImage = createRectangle(image=blue_rect_yellow_fill,topLeftPoint=(100,100),lineThickness=5,color=(0,255,255),fillColor=(255,0,0),fill=True)
+    # Add red border to the final image
+    finalImage_withBorder = createBorder(image=finalImage,color=(0,0,255),lineThickness=2)
     
     # Display results
     cv2.imshow("Blank canvas", img_black_default)
@@ -45,6 +47,8 @@ def main():
     cv2.imshow("Blue rectangle filled with yellow", blue_rect_yellow_fill)
     cv2.waitKey(0)
     cv2.imshow("Final image",finalImage)
+    cv2.waitKey(0)
+    cv2.imshow("Final image with border", finalImage_withBorder)
     cv2.waitKey(0)
     
     cv2.destroyAllWindows()

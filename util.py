@@ -93,6 +93,22 @@ def createRectangle(image=None,topLeftPoint=None,bottomRightPoint=None,color=(25
     # Draw the rectangle
     cv2.rectangle(image,topLeftPoint,bottomRightPoint,color,lineThickness)
     return image
+
+def createBorder(image=None,color=(255,255,255),lineThickness=3):
+    """
+    Creates border on the canvas
+    Arguments:
+        image = 3D Numpy array; image on which the border has to be added
+        color = (B,G,R); color of the border
+        lineThickness = integer; thickness of the border
+    """
+    # If image argument is not a numpy.ndarray
+    if type(image) != type(np.ones((5,5,3))):
+        # Create a black 300x300 px image
+        image = createBlankCanvas()
+    else:
+        image = image.copy()
+    return createRectangle(image=image,color=color,lineThickness=lineThickness)
     
 
 def createSampleCross(bgColor=(0,0,0),crossColor=(255,255,255),height=300,width=300):
