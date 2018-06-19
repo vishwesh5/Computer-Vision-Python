@@ -42,6 +42,8 @@ def createLine(image=None,firstPoint=None,secondPoint=None,color=(255,255,255),l
     if type(image) != type(np.ones((5,5,3))):
         # Create a black 300x300 px image
         image = createBlankCanvas()
+    else:
+        image = image.copy()
     # If starting point not provided
     if firstPoint == None:
         # Starting point = (0,0)
