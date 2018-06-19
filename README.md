@@ -22,7 +22,7 @@ def main():
     img_black_default = createBlankCanvas()
     # Create a yellow canvas of 500px*200px size
     img_yellow_500_200 = createBlankCanvas(color=(0,255,255),height=500,width=200)
-    cv2.imshow("Blank canvas", img_black_canvas)
+    cv2.imshow("Blank canvas", img_black_default)
     cv2.waitKey(0)
     cv2.imshow("Yellow canvas", img_yellow_500_200)
     cv2.waitKey(0)
