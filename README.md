@@ -100,12 +100,12 @@ def main():
     # Create a white cross on black canvas
     whiteCross = createSampleCross()
     # Create a blue cross on white canvas
-    blueCross = createSampleCross(bgColor=(255,255,255),crossColor=(0,0,0))
+    blueCross = createSampleCross(bgColor=(255,255,255),crossColor=(255,0,0))
     
     # Display results
     cv2.imshow("White cross on black canvas", whiteCross)
     cv2.waitKey(0)
-    cv2.imshow("Black cross on white canvas", blackCross)
+    cv2.imshow("Blue cross on white canvas", blueCross)
     cv2.waitKey(0)
     
     cv2.destroyAllWindows()
