@@ -111,6 +111,60 @@ def createBorder(image=None,color=(255,255,255),lineThickness=3):
         image = image.copy()
     return createRectangle(image=image,color=color,lineThickness=lineThickness)
 
+class point:
+    def __init__(self,coords):
+        self.x = coords[0]
+        self.y = coords[1]
+    def coords(self):
+        return (self.x,self.y)
+
+class RotatedRect(point):
+    """
+    Creates a rotated rectangle on an image
+    Arguments:
+        image = 3D Numpy array; image on which the border has to be added
+        center = (x,y); center of the rotated rectangle
+        size = (h,w); height and width of the rectangle
+        angle = angle (in degrees) by which the rectangle is rotated in clockwise direction
+        color = (B,G,R); color of the border
+        lineThickness = integer; thickness of the border
+    """
+    def __init__(self,center,size,image=None,angle=0,color=(255,255,255),lineThickness=3):
+        # Center of rectangle
+        self.center = center
+        # Size of rectangle
+        self.size = size
+        # If image argument is not a numpy.ndarray
+        if type(image) != type(np.ones((5,5,3))):
+            image = createBlankCanvas()
+        else:
+            image = image.copy()
+        self.image = image
+        self.color = color
+        self.lineThickness=lineThickness
+        # Convert angle to radians
+        self.angle = angle*pi/180
+        self.center = point(center)
+        self.h,self.w = size
+        verticesOriginal = [(self.center.x-self.w/2, self.center.y-self.h/2),(self.center.x+self.w/2,self.center.y-self.h/2),
+                        (self.center.x+self.w/2,self.center.y+self.h/2),(self.center.x-self.w/2,self.center.y+self.h/2)]
+        self.points = [point(((pt[0]-self.center.x)*cos(self.angle)-(pt[1]-self.center.y)*sin(self.angle)+self.center.x,
+                              (pt[0]-self.center.x)*sin(self.angle)+(pt[1]-self.center.y)*cos(self.angle)+self.center.y)) for pt in verticesOriginal] 
+        # Convert vertices to integers
+        self.points = [point((int(pt.x),int(pt.y))) for pt in self.points]
+        # Bounding box
+        min_X = min([pt.x for pt in self.points])
+        min_Y = min([pt.y for pt in self.points])
+        max_X = max([pt.x for pt in self.points])
+        max_Y = max([pt.y for pt in self.points])
+        self.bbox = [min_X,min_Y,max_X-min_X,max_Y-min_Y]
+    def drawRotatedRect(self):
+        for i in range(len(self.points)):
+            cv2.line(self.image,self.points[i].coords(),self.points[(i+1)%len(self.points)].coords(),self.color,self.lineThickness)
+        return self.image
+    def points(self):
+        return self.points
+
 def rotatedRect(center,size,image=None,angle=0,color=(255,255,255),lineThickness=3):
     """
     Creates a rotated rectangle on an image
@@ -150,6 +204,34 @@ def rotatedRect(center,size,image=None,angle=0,color=(255,255,255),lineThickness
     max_Y = max([pt[1] for pt in newVertices])
     bbox = [min_X,min_Y,max_X-min_X,max_Y-min_Y]
     return image,bbox
+def getPointsFromBoundingBox(bbox):
+    """
+    Returns vertices of a bounding box
+    Arguments:
+        bbox = [left,top,width,height]
+    """
+    # top left, top right, bottom right, bottom left
+    left,top,width,height = bbox
+    vertices = [(left,top),(left+width,top),
+                (left+width,top+height),(left,top+height)]
+    return vertices
+
+def plotRectFromPoints(vertices,image=None):
+    """
+    Plot rectangle from vertices
+    Arguments:
+        image = 3D Numpy array; image on which the rectangle has to be drawn
+        vertices = list of tuples (vertices)
+    """
+    # If image argument is not a numpy.ndarray
+    if type(image) != type(np.ones((5,5,3))):
+        image = createBlankCanvas()
+    else:
+        image = image.copy()
+    # Create rectangle
+    for i in range(len(vertices)):
+        cv2.line(image,vertices[i],vertices[(i+1)%4],(0,255,0),1)
+    return image
 
 def createSampleCross(bgColor=(0,0,0),crossColor=(255,255,255),height=300,width=300):
     """
