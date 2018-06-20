@@ -117,3 +117,13 @@ if __name__ == "__main__":
 ### `createRectangle` (*Description to be added*)
 
 ### `createBorder` (*Description to be added*)
+
+### Class `point` (*Description to be added*)
+
+### Class `RotatedRect` (*Description to be added*)
+
+### `rotatedDict` (*Description to be added*)
+
+### `getPointsFromBoundingBox` (*Description to be added*)
+
+### `plotRectFromPoints` (*Description to be addded*)
