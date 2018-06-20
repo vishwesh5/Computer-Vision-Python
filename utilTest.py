@@ -50,7 +50,9 @@ def main():
     cv2.waitKey(0)
     cv2.imshow("Final image with border", finalImage_withBorder)
     cv2.waitKey(0)
-    
+    final_with_rot_rect = rotatedRect(image=img_black_default,center=(150,150),size=(50,100),angle=30)
+    cv2.imshow("Rotated rectangle",final_with_rot_rect)
+    cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ Created on Tue Jun 19 15:22:41 2018
 
 import cv2
 import numpy as np
+from math import sin,cos,pi
 
 def createBlankCanvas(color=(0,0,0),height=300,width=300):
     """
@@ -109,7 +110,40 @@ def createBorder(image=None,color=(255,255,255),lineThickness=3):
     else:
         image = image.copy()
     return createRectangle(image=image,color=color,lineThickness=lineThickness)
-    
+
+def rotatedRect(center,size,image=None,angle=0,color=(255,255,255),lineThickness=3):
+    """
+    Creates a rotated rectangle on an image
+    Arguments:
+        image = 3D Numpy array; image on which the border has to be added
+        center = (x,y); center of the rotated rectangle
+        size = (h,w); height and width of the rectangle
+        angle = angle (in degrees) by which the rectangle is rotated in clockwise direction
+        color = (B,G,R); color of the border
+        lineThickness = integer; thickness of the border
+    """
+    # If image argument is not a numpy.ndarray
+    if type(image) != type(np.ones((5,5,3))):
+        # Create a black 300x300 px image
+        image = createBlankCanvas()
+    else:
+        image = image.copy()
+    # Convert angle to radians
+    angle = angle*pi/180
+    # Center coordinates
+    centerX,centerY = center
+    # Height and width
+    h,w = size
+    # Original vertices of the rectangle
+    # top left, top right, bottom right, bottom left
+    verticesOriginal = [(centerX-w/2, centerY-h/2),(centerX+w/2,centerY-h/2),
+                        (centerX+w/2,centerY+h/2),(centerX-w/2,centerY+h/2)]
+    newVertices = [((pt[0]-centerX)*cos(angle)-(pt[1]-centerY)*sin(angle)+centerX,(pt[0]-centerX)*sin(angle)+(pt[1]-centerY)*cos(angle)+centerY) for pt in verticesOriginal]
+    # Convert vertices to integers
+    newVertices = [(int(pt[0]),int(pt[1])) for pt in newVertices]
+    for i in range(len(newVertices)):
+        cv2.line(image,newVertices[i],newVertices[(i+1)%len(newVertices)],color,lineThickness)
+    return image
 
 def createSampleCross(bgColor=(0,0,0),crossColor=(255,255,255),height=300,width=300):
     """
