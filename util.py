@@ -143,7 +143,13 @@ def rotatedRect(center,size,image=None,angle=0,color=(255,255,255),lineThickness
     newVertices = [(int(pt[0]),int(pt[1])) for pt in newVertices]
     for i in range(len(newVertices)):
         cv2.line(image,newVertices[i],newVertices[(i+1)%len(newVertices)],color,lineThickness)
-    return image
+    # Bounding box
+    min_X = min([pt[0] for pt in newVertices])
+    min_Y = min([pt[1] for pt in newVertices])
+    max_X = max([pt[0] for pt in newVertices])
+    max_Y = max([pt[1] for pt in newVertices])
+    bbox = [min_X,min_Y,max_X-min_X,max_Y-min_Y]
+    return image,bbox
 
 def createSampleCross(bgColor=(0,0,0),crossColor=(255,255,255),height=300,width=300):
     """
